@@ -1,11 +1,20 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { UlList, Button, Item } from './ContactList.styled';
 
-export default function ContactList({ users, deleteUser }) {
+import { deleteUser } from '../../redux/contactsSlice';
+import { useSelector, useDispatch } from 'react-redux';
+
+export default function ContactList() {
+  const dispatch = useDispatch();
+  const { contacts } = useSelector(store => store.contacts);
+  const { filter } = useSelector(store => store.contacts);
+
+  const filteredContacts = contacts.filter(obj =>
+    obj.name.toLowerCase().trim().includes(filter)
+  );
   return (
     <UlList>
-      {users.map(({ id, name, number }) => (
+      {filteredContacts.map(({ id, name, number }) => (
         <Item key={id}>
           <p>
             {name} : {number}
@@ -13,7 +22,7 @@ export default function ContactList({ users, deleteUser }) {
           <Button
             type="button"
             onClick={() => {
-              deleteUser(id);
+              dispatch(deleteUser(id));
             }}
           ></Button>
         </Item>
@@ -21,13 +30,3 @@ export default function ContactList({ users, deleteUser }) {
     </UlList>
   );
 }
-ContactList.propTypes = {
-  users: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    }).isRequired
-  ).isRequired,
-  deleteUser: PropTypes.func.isRequired,
-};

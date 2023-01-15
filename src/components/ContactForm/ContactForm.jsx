@@ -1,11 +1,15 @@
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import { nanoid } from 'nanoid';
 import { Form, Input, Button, Bg, Label, Span } from './ContactForm.styled';
 
-export default function ContactForm({ makeNewUser }) {
+import { makeNewUser } from '../../redux/contactsSlice';
+import { useDispatch } from 'react-redux';
+
+export default function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
+
+  const dispatch = useDispatch();
 
   const handleDataUser = e => {
     switch (e.target.name) {
@@ -31,7 +35,7 @@ export default function ContactForm({ makeNewUser }) {
       number,
     };
 
-    makeNewUser(newUser);
+    dispatch(makeNewUser(newUser));
 
     setName('');
     setNumber('');
@@ -70,7 +74,3 @@ export default function ContactForm({ makeNewUser }) {
     </Form>
   );
 }
-
-ContactForm.propTypes = {
-  makeNewUser: PropTypes.func.isRequired,
-};

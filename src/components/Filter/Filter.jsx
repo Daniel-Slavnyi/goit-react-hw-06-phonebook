@@ -1,8 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { Label, Input, Span } from './Filter.styled';
 
-export default function Filter({ handleFilter, value }) {
+import { getFilter } from '../../redux/contactsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+
+export default function Filter() {
+  const { filter } = useSelector(state => state);
+  const dispatch = useDispatch();
+
+  const togleFilter = e => {
+    dispatch(getFilter(e.target.value));
+  };
   return (
     <Label>
       <Input
@@ -10,16 +18,11 @@ export default function Filter({ handleFilter, value }) {
         name="name"
         pattern="^[a-zA-Zа-яА-Я]+(([' -][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
         title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-        onChange={handleFilter}
-        value={value}
+        onChange={togleFilter}
+        value={filter}
         placeholder=" "
       />
       <Span>Name</Span>
     </Label>
   );
 }
-
-Filter.propTypes = {
-  handleFilter: PropTypes.func.isRequired,
-  value: PropTypes.string.isRequired,
-};
