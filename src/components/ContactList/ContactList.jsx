@@ -6,8 +6,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 export default function ContactList() {
   const dispatch = useDispatch();
-  const { contacts } = useSelector(store => store.contacts);
-  const { filter } = useSelector(store => store.contacts);
+  const contacts = useSelector(store => store.contacts.items);
+  const filter = useSelector(store => store.filter);
 
   const filteredContacts = contacts.filter(obj =>
     obj.name.toLowerCase().trim().includes(filter)
